@@ -1,0 +1,572 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0B0B0C"><meta name="description" content="Weekly weights programme and session tracker.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Punisher Training Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Oswald:wght@500;600&family=Karla:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+  :root{
+    --bg:#0B0B0C; --panel:#141417; --panel2:#1B1B1F; --line:#2A2A30;
+    --ink:#F4F3F1; --muted:#8C8C94; --accent:#E01B24; --accent-ink:#FF4A46;
+    --soft:#2A1013; --good:#4CC38A; --warn:#FFB224;
+    color-scheme:dark;
+  }
+  body{background:var(--bg); color:var(--ink); font-family:Karla, "Segoe UI", system-ui, sans-serif; line-height:1.5;}
+  .wrap{max-width:620px; margin:0 auto; padding-inline:16px; padding-block:0 80px;}
+
+  header.top{position:sticky; top:env(safe-area-inset-top, 0px); z-index:20; background:linear-gradient(180deg, #0B0B0C 70%, rgba(11,11,12,.92)); border-bottom:2px solid var(--accent); margin-inline:-16px; padding:12px 16px 0;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand .crest{flex:0 0 auto; color:var(--ink);}
+  .wordmark{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .brand h1{font-family:Oswald, Impact, sans-serif; font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:26px; line-height:1; margin:0;}
+  .brand h1 em{font-style:normal; color:var(--accent);}
+  .brand .v{font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:700;}
+  .motto{font-family:Oswald, sans-serif; font-size:10px; letter-spacing:.32em; text-transform:uppercase; color:var(--muted); margin:6px 0 0;}
+  nav.tabs{display:flex; gap:6px; overflow-x:auto; padding:10px 0 10px; scrollbar-width:none;}
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab{flex:0 0 auto; font-family:Oswald, sans-serif; letter-spacing:.14em; text-transform:uppercase; font-size:13px; padding:8px 14px; border-radius:2px; border:1px solid var(--line); background:var(--panel); color:var(--muted); cursor:pointer;}
+  .tab[aria-selected="true"]{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .tab:focus-visible, button:focus-visible, input:focus-visible, a:focus-visible, summary:focus-visible{outline:2px solid var(--accent-ink); outline-offset:2px;}
+
+  .dayhead{margin:20px 0 6px; border-left:4px solid var(--accent); padding-left:12px;}
+  .dayhead h2{font-family:Oswald, sans-serif; text-transform:uppercase; letter-spacing:.06em; font-size:22px; margin:0 0 2px; text-wrap:balance;}
+  .dayhead p{margin:0; color:var(--muted); font-size:14px;}
+  .status{font-size:13px; color:var(--muted); margin:10px 0 0; min-height:19px;}
+  .status.ok{color:var(--good);} .status.warn{color:var(--accent-ink);}
+
+  .ex{position:relative; background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:3px; padding:14px 14px 12px; margin-top:12px;}
+  .ex .n{position:absolute; top:6px; right:12px; font-family:Oswald, sans-serif; font-size:34px; line-height:1; font-weight:600; color:#FFFFFF0F; letter-spacing:.02em;}
+  .ex h3{margin:0 0 4px; font-family:Oswald, sans-serif; font-weight:500; letter-spacing:.04em; text-transform:uppercase; font-size:18px; line-height:1.2; padding-right:44px;}
+  .ex h3 a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:4px; text-decoration-thickness:2px;}
+  .dose{font-family:Oswald, sans-serif; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent-ink);}
+  .kitline{font-size:13px; color:var(--muted); margin-top:2px;}
+  .ex figure{margin:10px 0 0; background:#F7F4EF; border:1px solid var(--line); border-radius:3px; overflow:hidden;}
+  .ex figure img{display:block; width:100%; max-width:100%; height:auto;}
+  details.how{margin-top:8px;}
+  details.how summary{font-family:Oswald, sans-serif; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); cursor:pointer; list-style:none;}
+  details.how summary::-webkit-details-marker{display:none;}
+  details.how summary::before{content:"+ "; color:var(--accent);}
+  details.how[open] summary::before{content:"– "; color:var(--accent);}
+  details.how p{margin:6px 0 0; font-size:14px; color:#DAD7D2;}
+
+  .track{display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end; margin-top:12px; padding-top:12px; border-top:1px solid var(--line);}
+  .field{display:flex; flex-direction:column; gap:4px;}
+  .field label{font-family:Oswald, sans-serif; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);}
+  input[type="number"]{width:66px; padding:9px 8px; font:600 16px Karla, sans-serif; font-variant-numeric:tabular-nums; color:var(--ink); background:var(--panel2); border:1px solid var(--line); border-radius:3px;}
+  input.sets{width:52px;}
+  .last{font-size:12px; color:var(--muted); margin-top:8px; font-variant-numeric:tabular-nums;}
+
+  .savebar .status{text-align:center; margin-top:8px;}
+  .savebar .status.saved{font-family:Oswald, sans-serif; letter-spacing:.1em; text-transform:uppercase; font-size:13px; color:var(--good);}
+  .savebar{position:sticky; bottom:0; padding-bottom:calc(12px + env(safe-area-inset-bottom, 0px)); padding-top:12px; background:linear-gradient(to top, var(--bg) 72%, transparent); margin-top:16px;}
+  button.save{width:100%; font-family:Oswald, sans-serif; text-transform:uppercase; letter-spacing:.16em; font-size:16px; padding:15px; border:0; border-radius:3px; background:var(--accent); color:#fff; cursor:pointer;}
+  button.save[disabled]{opacity:.5; cursor:default;}
+
+  .block{background:var(--panel); border:1px solid var(--line); border-radius:3px; padding:14px; margin-top:14px;}
+  .block h3{font-family:Oswald, sans-serif; text-transform:uppercase; letter-spacing:.14em; font-size:13px; margin:0 0 10px; color:var(--accent-ink);}
+  .block ul{margin:0; padding-left:18px;}
+  .block li{margin:6px 0; font-size:14px;}
+  .block li .d{color:var(--muted); font-size:13px;}
+  .block a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:3px;}
+  .block ul.mini{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .block ul.mini li{display:flex; align-items:center; gap:10px; margin:0;}
+  .mini-thumb{flex:0 0 auto; width:44px; height:44px; border-radius:3px; background:#F7F4EF; border:1px solid var(--line); object-fit:cover;}
+  .mini-text{flex:1 1 auto; min-width:0;}
+
+  table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums;}
+  th,td{text-align:left; padding:7px 8px; border-bottom:1px solid var(--line);}
+  th{font-family:Oswald, sans-serif; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
+  .tablewrap{overflow-x:auto;}
+
+  .logitem{border-left:3px solid var(--accent); padding-left:12px; margin:14px 0;}
+  .logitem .when{font-family:Oswald, sans-serif; text-transform:uppercase; letter-spacing:.1em; font-size:13px;}
+  .logitem .rows{font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums;}
+  .logitem .sync{font-size:11px; margin-top:2px;}
+  .logitem .sync.ok{color:var(--good);}
+  .logitem .sync.warn{color:var(--accent-ink);}
+  .note{font-size:13px; color:var(--muted); margin-top:10px;}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important;}}
+
+  /* --- grit --- */
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:60; opacity:.10;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size:180px 180px;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:59; opacity:.035;
+    background-image:repeating-linear-gradient(104deg, transparent 0 23px, #FFFFFF 23px 24px, transparent 24px 96px);
+  }
+  .ex, .block{
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)' opacity='0.35'/%3E%3C/svg%3E");
+    background-size:120px 120px;
+  }
+
+  /* --- wordmark --- */
+  .mark{
+    font-family:"Black Ops One", Oswald, Impact, sans-serif; font-weight:400;
+    text-transform:uppercase; letter-spacing:.04em; line-height:.92;
+    font-size:clamp(30px, 9.4vw, 44px); margin:0; color:var(--ink);
+  }
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    .mark{
+      color:transparent; -webkit-text-fill-color:transparent;
+      -webkit-background-clip:text; background-clip:text;
+      background-color:#F4F3F1;
+      background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='120'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015 0.22' numOctaves='4' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='3' intercept='-0.55'/%3E%3CfeFuncG type='linear' slope='3' intercept='-0.55'/%3E%3CfeFuncB type='linear' slope='3' intercept='-0.55'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='120' fill='white'/%3E%3Crect width='220' height='120' filter='url(%23c)' opacity='0.85'/%3E%3C/svg%3E");
+      background-size:220px 120px; background-blend-mode:multiply;
+    }
+  }
+  .mark .dot{color:var(--accent); -webkit-text-fill-color:var(--accent);}
+  .rulebar{height:3px; background:var(--accent); margin:6px 0 0; position:relative;}
+  .rulebar::after{content:""; position:absolute; right:0; top:0; height:3px; width:28%; background:var(--bg); opacity:.55;}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="wordmark"><h1 class="mark">Punisher<span class="dot">.</span></h1><span class="v">V4 · Weights</span></div>
+    </div>
+    <div class="rulebar"></div>
+    <p class="motto">Discipline · Consistency · No ego lifting</p>
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+  </header>
+  <main id="view"></main>
+</div>
+
+<script>
+// ---- Config: fill this in once the Google Apps Script Web App is deployed (stage 3/4). ----
+// Leave as "" to run purely offline (localStorage only, nothing reaches the Sheet).
+const APPS_SCRIPT_URL = "";
+
+const YT = u => "https://www.youtube.com/watch?v=" + u;
+
+const WARMUP = [
+  {name:"March on the Spot", d:"60 sec", v:"u1gmWFvEluM", img:"img/wu1.webp"},
+  {name:"Arm Circles", d:"30 sec forward + 30 back", v:"tYo5ghpLksg", img:"img/wu2.webp"},
+  {name:"Leg Swings", d:"10 each leg", v:"D17eUtUt0zQ", img:"img/wu3.webp"},
+  {name:"Cat–Cow", d:"8 reps", v:"xyNwxiuERXc", img:"img/wu4.webp"},
+  {name:"Hip Hinge", d:"10 reps", v:"vauqqYoLKvw", img:"img/wu5.webp"},
+  {name:"Bodyweight Squat", d:"10 slow reps", v:"P-yaD24bUE8", img:"img/wu6.webp"}
+];
+
+const COOLDOWN = [
+  {name:"Doorway Chest Stretch", d:"30 sec × 2", v:"M850sCj9LHQ", img:"img/cd1.webp"},
+  {name:"Standing Quad Stretch", d:"30 sec each side", v:"kia2OzZiwqw", img:"img/cd2.webp"},
+  {name:"Half-kneeling Hip Flexor Stretch", d:"30 sec each side", v:"mzPvzMivukw", img:"img/cd3.webp"},
+  {name:"Lying Hamstring Stretch with Towel", d:"30 sec each side", v:"O4mmCtewAJ8", img:"img/cd4.webp"},
+  {name:"Figure-4 Glute Stretch", d:"30 sec each side", v:"2VE_NLcNMvQ", img:"img/cd5.webp"},
+  {name:"Child's Pose", d:"60 sec, slow breathing", v:"_ZX_zTOBgp8", img:"img/cd6.webp"}
+];
+
+const PROGRAM = {
+  mon: {
+    label:"Mon", title:"Monday — Strength A",
+    goal:"Squat, hinge, press and row. Heaviest day of the week.",
+    items:[
+      {id:"m1", img:"img/m1.webp", name:"Goblet Squat", v:"aNDUbH_Uv4g", dose:"4 sets × 10 reps · 60 sec rest", kit:"6 kg kettlebell, or a 7 kg dumbbell held at the chest", sets:4, weight:true,
+       how:"Hold the weight against your chest with both hands. Feet shoulder-width, toes turned out slightly. Sit hips back and down until the thighs are at least parallel, chest up, knees tracking over the toes. Drive through the whole foot to stand."},
+      {id:"m2", img:"img/m2.webp", name:"Romanian Deadlift", v:"xgusDooVfKU", dose:"4 sets × 10 reps · 90 sec rest", kit:"Barbell — start at bar + 2.5 kg a side", sets:4, weight:true,
+       how:"Stand tall holding the bar at the front of your thighs, knees softly bent. Push the hips straight back, keeping the bar touching your legs and your back flat, until you feel the hamstrings stretch. Drive the hips forward to stand. The bar does not reach the floor."},
+      {id:"m3", img:"img/m3.webp", name:"Dumbbell Floor Press", v:"vagdk94bFn4", dose:"4 sets × 8 reps · 90 sec rest", kit:"7 kg dumbbells", sets:4, weight:true,
+       how:"Lie on your back, knees bent, a dumbbell in each hand above the chest. Lower until the backs of your upper arms touch the floor, pause for a beat, then press back up. The floor stops the range, which keeps the shoulders safe without a bench."},
+      {id:"m4", img:"img/m4.webp", name:"One-Arm Dumbbell Row", v:"tDgQx0W1JP0", dose:"4 sets × 10 reps each arm · 60 sec rest", kit:"7 kg dumbbell", sets:4, weight:true,
+       how:"Split stance, front knee bent, free hand braced on that thigh. Hinge forward with a flat back. Pull the dumbbell to your lower ribs, driving the elbow back and squeezing the shoulder blade. Lower under control. All reps one side, then swap."},
+      {id:"m5", img:"img/m5.webp", name:"Dead Bug", v:"bxn9FBrt4-A", dose:"3 sets × 8 reps each side · 45 sec rest", kit:"Bodyweight", sets:3, weight:false,
+       how:"On your back, arms pointing at the ceiling, knees bent 90° above the hips. Press the lower back into the floor. Slowly lower the opposite arm and leg, return, switch. The lower back stays flat throughout."},
+      {id:"m6", img:"img/m6.webp", name:"Forearm Plank", v:"mwlp75MS6Rg", dose:"3 sets × 30 sec hold · 45 sec rest", kit:"Bodyweight", sets:3, weight:false, unit:"sec",
+       how:"Elbows under shoulders, body in a straight line, stomach and glutes braced, hips level. Breathe normally. Stop the set when the hips drop."}
+    ]
+  },
+  wed: {
+    label:"Wed", title:"Wednesday — Strength B",
+    goal:"Hinge, lunge, overhead press, row and arms. ⚠ Barbell deadlift is out until the GP clears your back — glute bridge in its place.",
+    items:[
+      {id:"d1", img:"img/d1.webp", name:"Glute Bridge", v:"L9KZfxT654Y", dose:"4 sets × 15 reps · 60 sec rest", kit:"Bodyweight — hold a 7 kg dumbbell on the hips once 15 is easy", sets:4, weight:true,
+       how:"Lie on your back, knees bent, feet flat and hip-width apart. Push through the heels to lift the hips until the body is straight from shoulders to knees. Squeeze the glutes hard and hold 2 seconds at the top, then lower slowly. Same muscles as the deadlift with no load through the spine."},
+      {id:"d2", img:"img/d2.webp", name:"Dumbbell Reverse Lunge", v:"RZKXLMxPF_I", dose:"3 sets × 10 reps each leg · 60 sec rest", kit:"7 kg dumbbells, one in each hand", sets:3, weight:true,
+       how:"Stand tall, a dumbbell in each hand. Step one foot back and lower the back knee towards the floor, front shin near vertical, torso upright. Push through the front heel to return."},
+      {id:"d3", img:"img/d3.webp", name:"Standing Overhead Press", v:"fYeUxGIjZyc", dose:"4 sets × 8 reps · 90 sec rest", kit:"7 kg dumbbells", sets:4, weight:true,
+       how:"Dumbbells at shoulder height, palms forward, feet hip-width. Brace the stomach and squeeze the glutes so you don't lean back. Press straight overhead, then lower under control to the shoulders."},
+      {id:"d4", img:"img/d4.webp", name:"Barbell Bent-over Row", v:"rqTOAM8WoeM", dose:"4 sets × 10 reps · 60 sec rest", kit:"Barbell — start at bar + 2.5 kg a side", sets:4, weight:true,
+       how:"Hinge forward until your torso is about 45°, back flat, bar hanging at arms' length. Pull the bar to your lower ribs, squeeze the shoulder blades, lower slowly. No jerking with the lower back."},
+      {id:"d5", img:"img/d5.webp", name:"Dumbbell Biceps Curl", v:"nBzLCE-dcRQ", dose:"3 sets × 12 reps · 45 sec rest", kit:"7 kg dumbbells", sets:3, weight:true,
+       how:"Stand tall, elbows close to your ribs, palms forward. Curl without swinging, pause at the top, then lower slowly — the lowering is where the arm grows."},
+      {id:"d6", img:"img/d6.webp", name:"Side Plank", v:"iNbH7_edNI8", dose:"3 sets × 20 sec each side · 45 sec rest", kit:"Bodyweight", sets:3, weight:false, unit:"sec",
+       how:"On your side, elbow under shoulder, feet stacked. Lift the hips to a straight line and hold. Easier version: bottom knee on the floor."},
+      {id:"d7", img:"img/d7.webp", name:"Reverse Crunch", v:"yH-oSzE5_g0", dose:"3 sets × 10 reps · 45 sec rest", kit:"Bodyweight", sets:3, weight:false,
+       how:"On your back, knees bent 90° above the hips, arms by your sides. Use the lower stomach to curl the hips just off the floor, then lower slowly. No swinging."}
+    ]
+  },
+  fri: {
+    label:"Fri", title:"Friday — Conditioning Circuit",
+    goal:"Four rounds, moving steadily. 60–90 sec rest between rounds, then the walk. ⚠ Swing stays at 6 kg. Stop the set at the first twinge in your back.",
+    rounds:true,
+    items:[
+      {id:"f1", img:"img/f1.webp", name:"Kettlebell Swing", v:"N-eOdZH7TlU", dose:"15 reps per round", kit:"6 kg kettlebell", weight:true,
+       how:"Hinge, don't squat. Hike the kettlebell back between your legs, then snap the hips forward so it floats to chest height. The hips do the work, not the shoulders. Stop the set at the first twinge in your back — not at the end of it."},
+      {id:"f2", img:"img/f2.webp", name:"Push-up", v:"WDIpL0pjun0", dose:"10 reps per round", kit:"Bodyweight", weight:false,
+       how:"Hands slightly wider than shoulders, body straight from head to heels. Lower the chest to a fist's height off the floor and press up. Drop to your knees for the last reps rather than losing the straight line."},
+      {id:"f3", img:"img/f3.webp", name:"Dumbbell Thruster", v:"0RJXwEZmcCg", dose:"12 reps per round", kit:"4 kg dumbbells", weight:true,
+       how:"Dumbbells at the shoulders. Squat down, then stand and press them overhead in one smooth movement. Use the drive out of the squat to start the press."},
+      {id:"f4", img:"img/f4.webp", name:"Barbell Bent-over Row", v:"rqTOAM8WoeM", dose:"12 reps per round", kit:"Barbell, lighter than Wednesday", weight:true,
+       how:"Same as Wednesday, with a lighter bar. Flat back, pull to the lower ribs, lower under control."},
+      {id:"f5", img:"img/f5.webp", name:"Mountain Climber", v:"CQk4MHY2_Tc", dose:"20 reps per round (10 each leg)", kit:"Bodyweight", weight:false,
+       how:"High plank, hands under shoulders. Drive one knee towards the chest, return it, then the other. Hips stay low and steady — controlled, not a sprint."},
+      {id:"f6", img:"img/f6.webp", name:"Incline Treadmill Walk", v:"Ii71nAaRc_8", dose:"10 min finisher · incline 4–6%, 4.5–5.5 km/h", kit:"Treadmill", weight:false, minutes:true,
+       how:"After the last round. Walk tall, arms swinging, hands off the rails. Keep the pace where you could still talk in short sentences."}
+    ]
+  },
+  sat: {
+    label:"Sat", title:"Saturday — Optional Bonus",
+    goal:"Only if you're up to it. Counts as the fourth session of the week.",
+    items:[
+      {id:"s1", img:"img/s1.webp", name:"Incline Treadmill Walk", v:"Ii71nAaRc_8", dose:"30–40 min · incline 3–6%", kit:"Treadmill", weight:false, minutes:true,
+       how:"Easy to moderate pace — able to talk in short sentences. Hands off the rails."},
+      {id:"s2", img:"img/s2.webp", name:"Foam Roll", v:"Ukk_LNN_uPc", dose:"5 min — quads, then upper back", kit:"Foam roller", weight:false,
+       how:"Roll slowly, about an inch per second. Pause a few seconds on a tender spot and breathe out. Keep off the lower back and the bones."},
+      {id:"s3", img:"img/s3.webp", name:"Full Flexibility Routine", v:"_ZX_zTOBgp8", dose:"15 min — the cool-down list, twice through", kit:"Towel, floor", weight:false,
+       how:"Every stretch from the cool-down, two rounds. Breathe out into each one. Never force the range."}
+    ]
+  }
+};
+
+const KIT = [
+  ["Barbell", "Threaded bar, 10 kg (weighed)"],
+  ["Plates", "2 × 1.5 kg · 2 × 2.5 kg · 2 × 5 kg · 2 × 10 kg (38 kg total)"],
+  ["Dumbbells", "2 × 4 kg · 2 × 7 kg"],
+  ["Kettlebell", "6 kg"],
+  ["Cardio", "Bodyworx BW9300 treadmill, skipping rope"],
+  ["Other", "Balance trainer with resistance tubes, foam roller, floor space, door frame"]
+];
+
+const BAR = 10;
+const PER_SIDE = [0,1.5,2.5,4,5,6.5,7.5,9,10,11.5,12.5,14,15,16.5,17.5,19];
+
+const DAYS = ["mon","wed","fri","sat"];
+const TABS = [...DAYS, "log", "kit"];
+const TAB_LABEL = {mon:"Mon", wed:"Wed", fri:"Fri", sat:"Sat", log:"Log", kit:"Kit"};
+
+const STORE_KEY = "punisher:sessions";
+
+let sessions = loadSessions(), current = defaultTab(), entries = {}, saving = false;
+
+function defaultTab(){
+  const d = new Date().getDay();
+  if (d === 1) return "mon";
+  if (d === 3) return "wed";
+  if (d === 5) return "fri";
+  if (d === 6) return "sat";
+  return "mon";
+}
+function today(){
+  const n = new Date();
+  return n.getFullYear() + "-" + String(n.getMonth()+1).padStart(2,"0") + "-" + String(n.getDate()).padStart(2,"0");
+}
+function draftKey(){ return "punisher:draft:" + current + ":" + today(); }
+function loadDraft(){
+  try { const raw = localStorage.getItem(draftKey()); return raw ? JSON.parse(raw) : {}; } catch (e) { return {}; }
+}
+function saveDraft(){
+  try { localStorage.setItem(draftKey(), JSON.stringify(entries)); } catch (e) {}
+}
+function loadSessions(){
+  try { const raw = localStorage.getItem(STORE_KEY); return raw ? JSON.parse(raw) : []; } catch (e) { return []; }
+}
+function persistSessions(){
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(sessions)); } catch (e) {}
+}
+function lastSessionFor(day){
+  return sessions.find(s => s.day === day) || null;
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function renderTabs(){
+  const nav = document.getElementById("tabs");
+  nav.innerHTML = "";
+  TABS.forEach(t => {
+    const b = document.createElement("button");
+    b.className = "tab"; b.type = "button"; b.role = "tab";
+    b.textContent = TAB_LABEL[t];
+    b.setAttribute("aria-selected", String(t === current));
+    b.addEventListener("click", () => { current = t; entries = DAYS.includes(t) ? loadDraft() : {}; render(); window.scrollTo({top:0}); });
+    nav.appendChild(b);
+  });
+}
+
+function listBlock(title, items, note){
+  return '<div class="block"><h3>' + esc(title) + '</h3><ul class="mini">' +
+    items.map(i => '<li>' +
+      (i.img ? '<img class="mini-thumb" src="' + i.img + '" alt="' + esc(i.name) + ' position" loading="lazy" width="120" height="120">' : '') +
+      '<span class="mini-text"><a href="' + YT(i.v) + '" target="_blank" rel="noopener">' + esc(i.name) + '</a> <span class="d">— ' + esc(i.d) + '</span></span>' +
+      '</li>').join("") +
+    '</ul>' + (note ? '<p class="note">' + esc(note) + '</p>' : '') + '</div>';
+}
+
+function exerciseCard(item, idx, day){
+  const e = entries[item.id] || {};
+  const last = lastSessionFor(day);
+  const le = last && last.entries ? last.entries[item.id] : null;
+  let lastTxt = "";
+  if (le) {
+    const bits = [];
+    if (le.w != null && le.w !== "") bits.push(le.w + " kg");
+    if (Array.isArray(le.reps) && le.reps.some(r => r !== null && r !== "")) bits.push(le.reps.map(r => (r === null || r === "") ? "–" : r).join(" / "));
+    if (le.min != null && le.min !== "") bits.push(le.min + " min");
+    if (bits.length) lastTxt = '<p class="last">Last ' + esc(last.date) + ": " + esc(bits.join(" · ")) + "</p>";
+  }
+
+  let fields = "";
+  if (item.weight) {
+    fields += '<div class="field"><label for="w-' + item.id + '">Weight kg</label>' +
+      '<input type="number" step="0.5" min="0" id="w-' + item.id + '" data-id="' + item.id + '" data-k="w" value="' + (e.w != null ? esc(e.w) : "") + '" inputmode="decimal"></div>';
+  }
+  if (item.sets) {
+    for (let s = 0; s < item.sets; s++) {
+      const val = Array.isArray(e.reps) && e.reps[s] != null ? esc(e.reps[s]) : "";
+      fields += '<div class="field"><label for="r-' + item.id + '-' + s + '">' + (item.unit === "sec" ? "Sec " : "Set ") + (s+1) + '</label>' +
+        '<input class="sets" type="number" min="0" id="r-' + item.id + '-' + s + '" data-id="' + item.id + '" data-k="reps" data-i="' + s + '" value="' + val + '" inputmode="numeric"></div>';
+    }
+  }
+  if (item.minutes) {
+    fields += '<div class="field"><label for="min-' + item.id + '">Minutes</label>' +
+      '<input type="number" min="0" id="min-' + item.id + '" data-id="' + item.id + '" data-k="min" value="' + (e.min != null ? esc(e.min) : "") + '" inputmode="numeric"></div>';
+  }
+
+  return '<article class="ex">' +
+    '<div class="n">' + String(idx+1).padStart(2,"0") + '</div>' +
+    '<h3><a href="' + YT(item.v) + '" target="_blank" rel="noopener">' + esc(item.name) + '</a></h3>' +
+    '<div class="dose">' + esc(item.dose) + '</div>' +
+    '<div class="kitline">' + esc(item.kit) + '</div>' +
+    (item.img ? '<figure><img src="' + item.img + '" alt="' + esc(item.name) + ' position" loading="lazy" width="560" height="560"></figure>' : '') +
+    '<details class="how"><summary>How to do it</summary><p>' + esc(item.how) + '</p></details>' +
+    (fields ? '<div class="track">' + fields + '</div>' : '') +
+    lastTxt +
+    '</article>';
+}
+
+function renderDay(day){
+  const d = PROGRAM[day];
+  let html = '<section class="dayhead"><h2>' + esc(d.title) + '</h2><p>' + esc(d.goal) + '</p></section>';
+  html += '<p class="status" id="status"></p>';
+  html += listBlock("Warm-up · 8 minutes", WARMUP);
+  if (d.rounds) {
+    const r = entries._rounds != null ? esc(entries._rounds) : "";
+    html += '<div class="block"><h3>Rounds completed</h3><div class="track" style="border:0; padding-top:0; margin-top:0;">' +
+      '<div class="field"><label for="rounds">Of 4</label><input class="sets" type="number" min="0" max="8" id="rounds" data-k="_rounds" value="' + r + '" inputmode="numeric"></div>' +
+      '</div></div>';
+  }
+  html += d.items.map((it,i) => exerciseCard(it, i, day)).join("");
+  html += listBlock("Cool-down and flexibility · 10 minutes", COOLDOWN, "This is where the flexibility goal is built. Don't skip it.");
+  html += '<div class="savebar"><button class="save" type="button" id="savebtn">Save this session</button>' +
+    '<p class="status" id="savestatus" role="status" aria-live="polite">Not saved yet today</p></div>';
+  return html;
+}
+
+function renderLog(){
+  let html = '<section class="dayhead"><h2>Training log</h2><p>Everything you have saved, newest first. Your Friday review reads the Google Sheet copy of this.</p></section>';
+  if (!sessions.length) {
+    html += '<div class="block"><h3>No sessions yet</h3><p class="note">Save a session from a training day and it appears here, with the weights carried forward so you can see what to beat.</p></div>';
+    return html;
+  }
+  html += '<div class="block"><h3>' + sessions.length + ' session' + (sessions.length === 1 ? "" : "s") + ' saved</h3>';
+  sessions.forEach(s => {
+    const day = PROGRAM[s.day];
+    const rows = [];
+    if (day) day.items.forEach(it => {
+      const e = s.entries ? s.entries[it.id] : null;
+      if (!e) return;
+      const bits = [];
+      if (e.w != null && e.w !== "") bits.push(e.w + " kg");
+      if (Array.isArray(e.reps) && e.reps.some(r => r !== null && r !== "")) bits.push(e.reps.map(r => (r === null || r === "") ? "–" : r).join("/"));
+      if (e.min != null && e.min !== "") bits.push(e.min + " min");
+      if (bits.length) rows.push(it.name + " — " + bits.join(" · "));
+    });
+    if (s.entries && s.entries._rounds != null && s.entries._rounds !== "") rows.unshift("Rounds: " + s.entries._rounds + " of 4");
+    const syncTxt = !APPS_SCRIPT_URL ? "" :
+      s.synced ? '<div class="sync ok">✓ In your Sheet</div>' :
+      '<div class="sync warn">⚠ Not yet in your Sheet — will retry next save</div>';
+    html += '<div class="logitem"><div class="when">' + esc(s.date) + ' · ' + esc(day ? day.label : s.day) + '</div>' +
+      '<div class="rows">' + (rows.length ? esc(rows.join(" · ")) : "Logged, no numbers entered") + '</div>' + syncTxt + '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderKit(){
+  let html = '<section class="dayhead"><h2>Kit and bar loading</h2><p>What you own, and what the bar weighs once it is loaded.</p></section>';
+  html += '<div class="block"><h3>Equipment</h3><div class="tablewrap"><table><tbody>' +
+    KIT.map(k => '<tr><th scope="row">' + esc(k[0]) + '</th><td>' + esc(k[1]) + '</td></tr>').join("") +
+    '</tbody></table></div><p class="note">Bar weighed at 10 kg.</p></div>';
+  html += '<div class="block"><h3>Loaded bar weights</h3><div class="tablewrap"><table><thead><tr><th>Per side</th><th>Total on the bar</th></tr></thead><tbody>' +
+    PER_SIDE.map(p => '<tr><td>' + p + ' kg</td><td>' + (BAR + 2*p) + ' kg</td></tr>').join("") +
+    '</tbody></table></div><p class="note">Bar is 10 kg. Add roughly 2.5–3 kg a step, not more.</p></div>';
+  html += '<div class="block"><h3>How to progress</h3><ul>' +
+    '<li>Finish each set with about <strong>2 good reps left</strong>.</li>' +
+    '<li>When you hit every set at the top of the rep range with clean form <strong>two sessions running</strong>, add weight — one step up the ladder above, or the next dumbbell.</li>' +
+    '<li>Change one thing at a time. Never add weight and reps in the same week.</li>' +
+    '<li>No jumping exercises until the GP has seen the program and your knees feel fine.</li>' +
+    '</ul></div>';
+  html += '<div class="block"><h3>Rules that do not move</h3><ul>' +
+    '<li>Stop for chest pain, dizziness, unusual breathlessness or sharp joint pain.</li>' +
+    '<li>Sharp or joint pain means stop and modify. Muscle burn does not.</li>' +
+    '<li>Finish the planned work, then stop. Do not add punishment because of mood.</li>' +
+    '<li>Three sessions a week beats one heroic one.</li>' +
+    '</ul></div>';
+  return html;
+}
+
+function render(){
+  renderTabs();
+  const view = document.getElementById("view");
+  if (current === "log") view.innerHTML = renderLog();
+  else if (current === "kit") view.innerHTML = renderKit();
+  else view.innerHTML = renderDay(current);
+  wire();
+}
+
+function wire(){
+  document.querySelectorAll("#view input[type=number]").forEach(inp => {
+    inp.addEventListener("input", () => {
+      const k = inp.dataset.k;
+      if (k === "_rounds") { entries._rounds = inp.value; saveDraft(); return; }
+      const id = inp.dataset.id;
+      entries[id] = entries[id] || {};
+      if (k === "reps") {
+        entries[id].reps = entries[id].reps || [];
+        entries[id].reps[Number(inp.dataset.i)] = inp.value;
+      } else {
+        entries[id][k] = inp.value;
+      }
+      saveDraft();
+    });
+  });
+  const btn = document.getElementById("savebtn");
+  if (btn) btn.addEventListener("click", saveSession);
+  paintSaveState();
+}
+
+function savedToday(){
+  const t = today();
+  return sessions.find(s => s.date === t && s.day === current) || null;
+}
+function savedTimeText(sess){
+  try {
+    const d = new Date(sess.savedAt);
+    return d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+  } catch (e) { return ""; }
+}
+function paintSaveState(){
+  const sess = savedToday();
+  const btn = document.getElementById("savebtn");
+  const el = document.getElementById("savestatus");
+  if (btn) btn.textContent = sess ? "Update today's session" : "Save this session";
+  if (el) {
+    if (sess) {
+      const t = savedTimeText(sess);
+      el.textContent = "✓ Saved today" + (t ? " at " + t : "") + " — tap again to update it";
+      el.className = "status ok saved";
+    } else {
+      el.textContent = "Not saved yet today";
+      el.className = "status";
+    }
+  }
+}
+
+function setStatus(msg, cls){
+  ["status","savestatus"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = msg; el.className = "status" + (cls ? " " + cls : ""); }
+  });
+}
+
+// Builds the flat rows this session turns into for the training-log Sheet:
+// [date, day, exercise, weight_kg, reps, notes] — one row per exercise, matching the Sheet's columns exactly.
+function buildRows(session){
+  const day = PROGRAM[session.day];
+  const rows = [];
+  if (!day) return rows;
+  if (session.entries && session.entries._rounds != null && session.entries._rounds !== "") {
+    rows.push([session.date, session.day, "Rounds completed", "", "", session.entries._rounds + " of 4"]);
+  }
+  day.items.forEach(it => {
+    const e = session.entries ? session.entries[it.id] : null;
+    if (!e) return;
+    const weight = (e.w != null && e.w !== "") ? e.w : "";
+    const reps = Array.isArray(e.reps) ? e.reps.map(r => (r === null || r === undefined) ? "" : r).join("/") : "";
+    const notes = (e.min != null && e.min !== "") ? (e.min + " min") : "";
+    if (weight === "" && reps === "" && notes === "") return;
+    rows.push([session.date, session.day, it.name, weight, reps, notes]);
+  });
+  return rows;
+}
+
+async function pushToSheet(session){
+  if (!APPS_SCRIPT_URL) return false;
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ rows: buildRows(session) })
+    });
+    return res.ok;
+  } catch (err) {
+    return false;
+  }
+}
+
+async function saveSession(){
+  if (saving) return;
+  const btn = document.getElementById("savebtn");
+  saving = true;
+  if (btn) btn.disabled = true;
+  setStatus("Saving…");
+  const date = today();
+  const doc = {date: date, day: current, savedAt: new Date().toISOString(), entries: entries, synced: false};
+
+  sessions = sessions.filter(s => !(s.date === date && s.day === current));
+  sessions.unshift(doc);
+  sessions.sort((a,b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+  persistSessions();
+
+  const top = document.getElementById("status");
+  if (btn) btn.textContent = "SESSION SAVED ✓";
+  const line = document.getElementById("savestatus");
+
+  if (APPS_SCRIPT_URL) {
+    const ok = await pushToSheet(doc);
+    doc.synced = ok;
+    persistSessions();
+    if (ok) {
+      if (top) { top.textContent = "Saved " + date + " — it's in your Sheet."; top.className = "status ok"; }
+      if (line) { line.textContent = "✓ Saved — it's in your Sheet"; line.className = "status ok saved"; }
+    } else {
+      if (top) { top.textContent = "Saved on this phone, but couldn't reach your Sheet. It'll retry next save."; top.className = "status warn"; }
+      if (line) { line.textContent = "⚠ Saved here only — sheet sync failed"; line.className = "status warn saved"; }
+    }
+  } else {
+    if (top) { top.textContent = "Saved " + date + " — it's in the Log tab."; top.className = "status ok"; }
+    if (line) { line.textContent = "✓ Session saved — it's in the Log tab"; line.className = "status ok saved"; }
+  }
+
+  setTimeout(paintSaveState, 2500);
+  saving = false;
+  if (btn) btn.disabled = false;
+}
+
+entries = loadDraft();
+render();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
+
+</body></html>
